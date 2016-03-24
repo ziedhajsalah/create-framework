@@ -12,5 +12,10 @@
     "authors": [{
         "name": "Zied Ben Haj Salah",
         "email": "ziedhajsalah@gmail.com"
-    }]
+    }],
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    }
 }

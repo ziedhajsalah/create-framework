@@ -35,6 +35,7 @@ $dispatcher->addSubscriber(new Simplex\ContentLengthListener());
 $dispatcher->addSubscriber(new Simplex\GoogleListener());
 
 $framework = new \Simplex\Framework($dispatcher, $matcher, $resolver);
+$framework = new HttpKernel\HttpCache\HttpCache($framework, new HttpKernel\HttpCache\Store(__DIR__ . '/../cache'));
 $response = $framework->handle($request);
 
 $response->send();

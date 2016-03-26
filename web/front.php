@@ -6,6 +6,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing;
 use Symfony\Component\HttpKernel;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Simplex\GoogleListener;
+use Simplex\ContentLengthListener;
+// use Simplex\Framework;
+// use Simplex\ResponseEvent;
+// use Simplex\GoogleListener;
+// use Simplex\ContentLengthListener;
 
 function render_template(Request $request)
 {
@@ -23,7 +30,11 @@ $context = new Routing\RequestContext();
 $matcher = new Routing\Matcher\UrlMatcher($routes, $context);
 $resolver = new HttpKernel\Controller\ControllerResolver();
 
-$framework = new Simplex\Framework($matcher, $resolver);
+$dispatcher = new EventDispatcher();
+$dispatcher->addSubscriber(new Simplex\ContentLengthListener());
+$dispatcher->addSubscriber(new Simplex\GoogleListener());
+
+$framework = new \Simplex\Framework($dispatcher, $matcher, $resolver);
 $response = $framework->handle($request);
 
 $response->send();

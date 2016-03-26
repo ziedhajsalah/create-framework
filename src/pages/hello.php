@@ -1,1 +1,1 @@
-Hello <?php echo htmlspecialchars($name, ENT_QUOTES, 'utf-8')?>
+<!-- Hello <?php //echo htmlspecialchars($name, ENT_QUOTES, 'utf-8')?> -->

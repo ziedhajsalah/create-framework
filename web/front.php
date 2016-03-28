@@ -9,10 +9,6 @@ use Symfony\Component\HttpKernel;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Simplex\GoogleListener;
 use Simplex\ContentLengthListener;
-// use Simplex\Framework;
-// use Simplex\ResponseEvent;
-// use Simplex\GoogleListener;
-// use Simplex\ContentLengthListener;
 
 function render_template(Request $request)
 {
@@ -31,11 +27,11 @@ $matcher = new Routing\Matcher\UrlMatcher($routes, $context);
 $resolver = new HttpKernel\Controller\ControllerResolver();
 
 $dispatcher = new EventDispatcher();
-$dispatcher->addSubscriber(new Simplex\ContentLengthListener());
-$dispatcher->addSubscriber(new Simplex\GoogleListener());
+$dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($matcher));
+$dispatcher->addSubscriber(new Simplex\StringResponseListener());
 
-$framework = new \Simplex\Framework($dispatcher, $matcher, $resolver);
-$framework = new HttpKernel\HttpCache\HttpCache($framework, new HttpKernel\HttpCache\Store(__DIR__ . '/../cache'));
+$framework = new \Simplex\Framework($dispatcher, $resolver);
+// $framework = new HttpKernel\HttpCache\HttpCache($framework, new HttpKernel\HttpCache\Store(__DIR__ . '/../cache'));
 $response = $framework->handle($request);
 
 $response->send();
